@@ -38,8 +38,9 @@ void setup() {
 void loop() {
   safeUpdate();
   if(isActive) {
-    digitalWrite(LCD_LIGHT_PIN, HIGH);
     if(previousActive != isActive) {
+      digitalWrite(LCD_LIGHT_PIN, HIGH);
+      loopCount = 0;
       for(int i = INITIAL_DELAY * 100; i >= 0; i--) {
         if(i % 100 == 0) {
            lcd.clear();
@@ -56,16 +57,22 @@ void loop() {
       lcd.setCursor(3,0);
       lcd.print("ACTIVE");
     }
+    if(loopCount == 3000) {
+       digitalWrite(LCD_LIGHT_PIN, LOW);
+    }
     previousActive = true;
     duration = sonar.ping();
     distance = (duration/2) * 0.0343;
     if(distance <= MAX_THRESHOLD && distance >= MIN_THRESHOLD) {
-      play();
+      if(isActive) {
+        play();
+      }
       isActive = false;
     }
   } 
   else {
     if(isActive != previousActive) {
+       loopCount = 0;
        digitalWrite(LCD_LIGHT_PIN, LOW);
        lcd.clear();
        lcd.setCursor(3,0);
@@ -73,6 +80,8 @@ void loop() {
     }
     previousActive = false;
   }
+  loopCount+=1;
+  Serial.println(loopCount);
   
 }
 
