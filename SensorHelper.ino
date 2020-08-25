@@ -9,7 +9,7 @@ const int piezoPin = 9; //should be 5
 const int trigPin = 10;
 const int echoPin = 11;  
 const int MAX_DISTANCE = 400;
-const int MIN_THRESHOLD = 100;
+const int MIN_THRESHOLD = 0;
 const int MAX_THRESHOLD = 300;
 int buttonState;
 int previousButtonState;
